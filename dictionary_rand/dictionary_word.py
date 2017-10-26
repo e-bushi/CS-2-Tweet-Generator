@@ -1,5 +1,7 @@
 import random
 import sys
+import time
+
 
 def clean_data(number_of_words):
     word_array = []
@@ -20,6 +22,8 @@ def clean_data(number_of_words):
 
 
 if __name__ == '__main__':
-    params = sys.argv[1:]
-    first = int(params[0])
+    start_time = time.time()
+    params = sys.argv[1]
+    first = int(params)
     print(clean_data(first))
+    print(time.time() - start_time)

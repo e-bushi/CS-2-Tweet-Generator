@@ -45,10 +45,23 @@ def word_frequency(array):
     return(word_dictionary)
 
 
+def word_frequency_arr(array):
+    "To Do: Add a familiarity array that logs every word once to prevent repetition"
+    words_arr = []
+    array_duplicate = array
+
+    for word in array_duplicate:
+        word_count = array.count(word)
+
+        words_arr.append([word_count, word])
+
+    return words_arr
+
 
 if __name__ == '__main__':
     fileToRead = sys.argv[1:]
     data = histogram(fileToRead[0])
     array = unique_words(data)
-    dictionary = word_frequency(array)
-    print(dictionary)
+    # dictionary = word_frequency(array)
+    new_array = word_frequency_arr(array)
+    print(new_array)

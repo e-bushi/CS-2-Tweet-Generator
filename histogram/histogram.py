@@ -60,11 +60,25 @@ def word_frequency_arr(array):
 
     return words_arr
 
+def word_frequency_tuple(array):
+    words_arr = []
+    array_duplicate = array
+
+    for word in array_duplicate:
+        word_count = array.count(word)
+
+        if tuple([word_count, word]) not in words_arr:
+            words_arr.append(tuple([word_count, word]))
+        else:
+            continue
+
+    return words_arr
+
 
 if __name__ == '__main__':
     fileToRead = sys.argv[1:]
     data = histogram(fileToRead[0])
     array = unique_words(data)
     # dictionary = word_frequency(array)
-    new_array = word_frequency_arr(array)
+    new_array = word_frequency_tuple(array)
     print(new_array)

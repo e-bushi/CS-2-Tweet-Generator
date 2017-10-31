@@ -53,7 +53,10 @@ def word_frequency_arr(array):
     for word in array_duplicate:
         word_count = array.count(word)
 
-        words_arr.append([word_count, word])
+        if [word_count, word] not in words_arr:
+            words_arr.append([word_count, word])
+        else:
+            continue
 
     return words_arr
 

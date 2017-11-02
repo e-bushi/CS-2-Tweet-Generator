@@ -81,4 +81,5 @@ if __name__ == '__main__':
     array = unique_words(data)
     # dictionary = word_frequency(array)
     new_array = word_frequency_tuple(array)
+    print("Hi")
     print(new_array)

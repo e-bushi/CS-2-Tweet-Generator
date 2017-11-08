@@ -8,15 +8,15 @@ def read_file(source_text):
     list_of_words = []
     with open(source_text, 'r') as phile:
         data = list(phile.readlines())
+        # data = phile.read().split()
 
     return data
 
 def just_words(data):
     # takes in a string and returns a list of unique words
-    word = ""
     word_array = []
     for line_array in data:
-
+        word = ""
         for character in line_array:
             if character in string.ascii_letters:
                 word += character.lower()
@@ -28,14 +28,25 @@ def just_words(data):
                     word = ""
                     continue
 
+    # word_array = []
+    # for a_word in data:
+    #     word = ""
+    #     for character in a_word:
+    #         if character not in string.punctuation:
+    #             word += character.lower()
+    #     word_array.append(word)
+
     return(word_array)
 
-def histogram(array):
-    histogram = {}
-    array_duplicate = array
 
-    for word in array_duplicate:
-        histogram[word] = array.count(word)
+def histogram_dict(array):
+    '''Make histogram. '''
+
+    histogram = {}
+
+    for word in array:
+        if word not in histogram:
+            histogram[word] = array.count(word)
 
     return(histogram)
 
@@ -50,7 +61,7 @@ def list_of_lists(words):
         else:
             listogram[get_index_of_item(word, listogram)][0] += 1
 
-    return sorted(listogram)
+    return listogram
 
 def get_index_of_item(item, list_of_lists):
     # iterate through the listogram
@@ -81,13 +92,13 @@ def token_total(gram):
     token_tot = 0
 
     '''histogram'''
-    # histogram = gram
-    # for word in histogram:
-    #     token_tot += histogram[word]
+    histogram = gram
+    for word in histogram:
+        token_tot += histogram[word]
     '''listgram'''
-    listogram = gram
-    for word in listogram:
-        token_tot += word[0]
+    # listogram = gram
+    # for word in listogram:
+    #     token_tot += word[0]
 
     '''tuplegram'''
     # tuplegram = gram
@@ -100,76 +111,89 @@ def token_total(gram):
 
 def probability_token(total, gram):
     """histogram"""
-    # histogram = gram
-    # proba_dict = {}
-    # for word in histogram:
-    #     proba_dict[word] = histogram[word] / total
+    random_num = random.randint(0, total)
+    histogram = gram
+    raw_proba_dict = {}
+    for word in histogram:
+        if random_num > histogram[word]:
+            random_num - histogram[word]
+        else:
+            return word
+
+
 
     """listogram"""
-    listogram = gram
-    proba_list = []
-    for word in listogram:
-        proba_list.append([word[0] / total, word[1]])
-
-    proba_range = []
-    for index in range(0, len(proba_list)):
-        if index == 0:
-            proba_range.append(proba_list[index])
-        elif index == len(proba_list) - 1:
-            proba_range.append([round(proba_range[index-1][0]+proba_list[index][0], 2), proba_list[index][1]])
-        else:
-            proba_range.append([proba_range[index-1][0]+proba_list[index][0], proba_list[index][1]])
+    # listogram = gram
+    # proba_list = []
+    # for word in listogram:
+    #     proba_list.append([word[0] / total, word[1]])
+    #
+    # proba_range = []
+    # for index in range(0, len(proba_list)):
+    #     if index == 0:
+    #         proba_range.append(proba_list[index])
+    #     elif index == len(proba_list) - 1:
+    #         proba_range.append([round(proba_range[index-1][0]+proba_list[index][0], 2), proba_list[index][1]])
+    #     else:
+    #         proba_range.append([proba_range[index-1][0]+proba_list[index][0], proba_list[index][1]])
 
     """tuplegram"""
     # proba_list_of_tuples = []
     # for word in histogram:
     #     proba_list_of_tuples.append(tuple([word, histogram[word] / total]))
 
-    return(proba_range)
+    return(raw_proba_dict)
 
-def generate_word(list_):
-    random_number = random.uniform(0, 1)
 
-    for word in list_:
-        if random_number < word[0]:
-            return [word[1], word[0]]
+def generate_word(total, gram):
+    random_num = random.randint(0, total)
+
+    for word in gram:
+        if random_num > gram[word]:
+            random_num -= gram[word]
         else:
-            continue
+            return word
 
-def generate_sentence(number_of_words, list_):
+
+def generate_sentence(number_of_words_to_generate, list_, total_tokens):
     sentence = ""
-    for _ in range(0, number_of_words):
-        word = generate_word(list_)
+    for _ in range(0, number_of_words_to_generate):
+        word = generate_word(total_tokens, list_)
 
-        sentence += "{} =>> {}\n".format(word[0], word[1])
+        sentence += "{} ".format(word)
 
     return sentence
 
-if __name__ == '__main__':
-    fileToRead = sys.argv[1:]
+
+def main():
 
     start = time.time()
-    data = read_file(fileToRead[0])
+    data = read_file("military_service_1.txt")
     print(time.time() - start)
 
     start = time.time()
     array = just_words(data)
     print(time.time() - start)
-    # histogram = dictionary(array)
+
     start = time.time()
-    listogram = list_of_lists(array)
-    print(time.time() - start)
+    histo = histogram_dict(array)
+    # listogram = list_of_lists(array)
     # tuplegram = list_of_tuples(array)
+    print(time.time() - start)
+
     # print(listogram)
-    start = time.time()
-    total_tokens = token_total(listogram)
-    print(time.time() - start)
+    # start = time.time()
+    total_tokens = token_total(histo)
+    # print(time.time() - start)
+    #
+    # start = time.time()
+    # probability_dictionary = probability_token(total_tokens, histo)
+    # print(time.time() - start)
 
     start = time.time()
-    probability_dictionary = probability_token(total_tokens, listogram)
-    print(time.time() - start)
-
-    start = time.time()
-    sentence = generate_sentence(10, probability_dictionary)
+    sentence = generate_sentence(50, histo, total_tokens)
     print(time.time() - start)
     print(sentence)
+
+
+main()

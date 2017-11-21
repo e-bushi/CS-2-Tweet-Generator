@@ -5,7 +5,6 @@ import time
 
 def read_file(source_text):
     # returns a string
-    list_of_words = []
     with open(source_text, 'r') as phile:
         data = list(phile.readlines())
         # data = phile.read().split()
@@ -66,9 +65,10 @@ def list_of_lists(words):
 def get_index_of_item(item, list_of_lists):
     # iterate through the listogram
     i = 0
-    for list_pair in list_of_lists:
+    for word in list_of_lists:
         # if we reach the item, return its index
-        if list_pair[1] == item:
+        # if list_pair[1] == item:
+        if word is item:
             return i
         else:
             i += 1
@@ -113,7 +113,6 @@ def probability_token(total, gram):
     """histogram"""
     random_num = random.randint(0, total)
     histogram = gram
-    raw_proba_dict = {}
     for word in histogram:
         if random_num > histogram[word]:
             random_num - histogram[word]
@@ -168,7 +167,7 @@ def generate_sentence(number_of_words_to_generate, list_, total_tokens):
 def main():
 
     start = time.time()
-    data = read_file("military_service_1.txt")
+    data = read_file("military_service.txt")
     print(time.time() - start)
 
     start = time.time()
@@ -193,7 +192,8 @@ def main():
     start = time.time()
     sentence = generate_sentence(50, histo, total_tokens)
     print(time.time() - start)
-    print(sentence)
+    return sentence
 
 
-main()
+if __name__ == '__main__':
+    main()

@@ -1,5 +1,5 @@
-tup_one = (1, "four")
-tup_two = (2, "three")
+dict_ = {'blue': {'fish': 1}, 'two': {'fish': 1}, 'fish': {'blue': 1, 'two': 1, 'red': 1}, 'red': {'fish': 1}, 'one': {'fish': 1}}
 
-
-print(tup_two)
+tokens = []
+for k, v in dict_.items():
+    print("{}".format())

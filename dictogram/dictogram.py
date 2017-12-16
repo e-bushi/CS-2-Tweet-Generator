@@ -1,5 +1,6 @@
 from __future__ import division, print_function  # Python 2 and 3 compatibility
 
+
 class Dictogram(dict):
     """Dictogram is a histogram implemented as a subclass of the dict type."""
 

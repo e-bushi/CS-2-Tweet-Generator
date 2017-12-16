@@ -97,11 +97,9 @@ class HashTable(object):
         #     raise KeyError('Key not found: {}'.format(key))
         index = self._bucket_index(key)
         bucket = self.buckets[index]
-
-        if bucket.find(lambda item: item[0] == key) is not None:
-            for key_, value in bucket.items():
-                if key_ == key:
-                    return value
+        data = bucket.find(lambda item: item[0] == key)
+        if data is not None:
+            return data[1]
         else:
             raise KeyError('Key not found: {}'.format(key))
 
@@ -114,16 +112,21 @@ class HashTable(object):
         # TODO: Check if key-value entry exists in bucket
         # TODO: If found, update value associated with given key
         # TODO: Otherwise, insert given key-value entry into bucket
-        index = self._bucket_index(key)
-        bucket = self.buckets[index]
+        index = self._bucket_index(key) # 0(1) time
+        bucket = self.buckets[index] # 0(1) time
 
-        if bucket.find(lambda item: item[0] == key) is not None:
-            for key_, value_ in bucket.items():
+        if bucket.find(lambda item: item[0] == key) is not None: #
+            for key_, value_ in bucket.items(): # ()
                 if key_ == key:
-                    bucket.delete((key_, value_))
-                    bucket.append((key, value))
+                    bucket.delete((key_, value_)) # 0(l) time for l items in list
+                bucket.append((key, value)) # 0(1) time
         else:
             bucket.append((key, value))
+
+        '''Method 2'''
+        # if self.contains(key):
+        #     bucket.delete(key)
+        # bucket.append((key, value))
 
     def delete(self, key):
         """Delete the given key from this hash table, or raise KeyError.
